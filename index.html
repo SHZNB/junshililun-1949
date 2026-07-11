@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>南京晓庄学院军事战争沉浸式互动平台</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">
+            <img src="assets/nanjing-xiaozhuang-seal.png" alt="南京晓庄学院校徽" />
+          </span>
+          <div>
+            <h1>南京晓庄学院军事战争沉浸式互动平台</h1>
+            <p>军事理论课 · 毛泽东军事思想专题</p>
+          </div>
+        </div>
+        <nav class="module-tabs" aria-label="课程模块">
+          <button class="tab active" type="button">四渡赤水</button>
+          <button class="tab" type="button">辽沈战役</button>
+          <button class="tab" type="button">抗美援朝</button>
+          <button class="tab" type="button">军棋赛事</button>
+        </nav>
+        <button class="student-card" id="openRegister" type="button">
+          <span id="studentName">学生注册</span>
+          <small id="studentMeta">进入沉浸体验</small>
+        </button>
+      </header>
+
+      <section class="workspace">
+        <aside class="sidebar" aria-label="章节导航">
+          <button class="chapter active" type="button">
+            <span>毛泽东军事思想</span>
+            <small>战略转移与运动战</small>
+          </button>
+          <button class="chapter" type="button">
+            <span>四渡赤水战役</span>
+            <small>1935 · 决策推演</small>
+          </button>
+          <button class="chapter disabled" type="button">
+            <span>辽沈战役</span>
+            <small>模块规划中</small>
+          </button>
+          <button class="chapter disabled" type="button">
+            <span>抗美援朝战争</span>
+            <small>模块规划中</small>
+          </button>
+          <div class="course-note">
+            <strong>教学目标</strong>
+            <p>从历史地图、军事文献和战役电影片段切入，让学生理解决策压力、战争残酷与和平来之不易。</p>
+          </div>
+        </aside>
+
+        <section class="main-stage" aria-label="四渡赤水沉浸式体验">
+          <div class="stage-toolbar">
+            <div>
+              <h2>四渡赤水：毛泽东第一视角决策舱</h2>
+              <p id="phaseCaption">一渡赤水 · 摆脱被动，寻找机动空间</p>
+            </div>
+            <div class="tool-actions">
+              <button id="toggleVr" class="icon-button" type="button" aria-label="切换裸眼3D视角">3D</button>
+              <button id="toggleMap" class="icon-button" type="button" aria-label="切换军事地图层">图</button>
+            </div>
+          </div>
+
+          <div class="panorama" id="panorama">
+            <img src="assets/siduchishui-panorama.png" alt="四渡赤水沉浸式战役地图视窗" />
+            <div class="map-overlay">
+              <svg id="battleMap" class="battle-map" viewBox="0 0 100 100" aria-label="四渡赤水动态军事态势图"></svg>
+              <div class="war-effects" id="warEffects" aria-hidden="true"></div>
+              <button class="hotspot active" style="left: 31%; top: 56%" data-point="土城受挫后，红军迅速调整渡河方向。">土城</button>
+              <button class="hotspot" style="left: 48%; top: 43%" data-point="二渡赤水后回师遵义，形成局部主动。">遵义</button>
+              <button class="hotspot" style="left: 66%; top: 62%" data-point="虚实结合，牵动敌军判断。">赤水河</button>
+              <div class="battle-legend" id="battleLegend"></div>
+              <div class="battle-ticker" id="battleTicker">动态推演载入中</div>
+            </div>
+            <div class="immersion-hud">
+              <span>视角：中央红军指挥所</span>
+              <span>资料层：地图 / 文献 / 影视片段</span>
+              <span id="hudState">风险：高 · 机动窗口：短</span>
+            </div>
+          </div>
+
+          <div class="timeline" aria-label="四渡赤水时间轴">
+            <button class="step active" data-phase="0" type="button">
+              <b>一渡</b>
+              <span>摆脱围堵</span>
+            </button>
+            <button class="step" data-phase="1" type="button">
+              <b>二渡</b>
+              <span>回师遵义</span>
+            </button>
+            <button class="step" data-phase="2" type="button">
+              <b>三渡</b>
+              <span>调动敌军</span>
+            </button>
+            <button class="step" data-phase="3" type="button">
+              <b>四渡</b>
+              <span>跳出合围</span>
+            </button>
+          </div>
+        </section>
+
+        <aside class="decision-panel" aria-label="决策推演面板">
+          <section class="panel-block">
+            <h3>当前态势</h3>
+            <p id="situation">敌军多路逼近，红军兵力与给养承压，需要通过运动战摆脱被动。</p>
+          </section>
+          <section class="panel-block">
+            <h3>可选决策</h3>
+            <div class="choice-list" id="choiceList"></div>
+          </section>
+          <section class="panel-block result-block">
+            <h3>推演反馈</h3>
+            <p id="feedback">选择一个行动方案，系统将从军事原则、风险与历史依据给出反馈。</p>
+          </section>
+          <section class="panel-block source-block">
+            <h3>资料依据</h3>
+            <button class="source active" type="button">战役地图：赤水河流域路线</button>
+            <button class="source" type="button">文献摘编：运动战与战略转移</button>
+            <button class="source" type="button">影视片段：渡河与指挥会议</button>
+          </section>
+          <button class="wargame-button" id="startWargame" type="button">进入军棋推演比赛</button>
+        </aside>
+      </section>
+
+      <section class="lower-deck">
+        <article class="briefing">
+          <h2>课堂任务</h2>
+          <p>以“假如你置身当时的指挥所”为任务框架，学生需要阅读地图、判断敌我态势、选择机动方向，并写出决策理由。</p>
+        </article>
+        <article class="scoreboard">
+          <h2>军棋推演积分</h2>
+          <div class="rank-row"><span>第一小组</span><strong>86</strong></div>
+          <div class="rank-row"><span>第三小组</span><strong>79</strong></div>
+          <div class="rank-row"><span>第二小组</span><strong>74</strong></div>
+        </article>
+        <article class="reflection">
+          <h2>学习评价</h2>
+          <textarea id="reflection" placeholder="记录你的决策依据：为什么在此时选择渡河、回师或佯动？"></textarea>
+          <button id="saveReflection" type="button">保存学习记录</button>
+        </article>
+      </section>
+    </main>
+
+    <dialog id="registerDialog" class="register-dialog">
+      <form method="dialog" id="registerForm">
+        <h2>学生注册体验</h2>
+        <label>
+          姓名
+          <input name="name" required placeholder="请输入姓名" />
+        </label>
+        <label>
+          学号
+          <input name="id" required placeholder="请输入学号" />
+        </label>
+        <label>
+          班级
+          <input name="className" required placeholder="例如：23级思政1班" />
+        </label>
+        <div class="dialog-actions">
+          <button value="cancel" type="submit">取消</button>
+          <button class="primary" value="confirm" type="submit">开始学习</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
