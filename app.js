@@ -18,6 +18,24 @@ const phases = [
       { x: 31, y: 52 },
       { x: 39, y: 47 },
     ],
+    redSteps: [
+      { x: 31, y: 50, label: "土城调整" },
+      { x: 43, y: 47, label: "向西机动" },
+      { x: 55, y: 50, label: "一渡赤水" },
+    ],
+    enemySteps: [
+      { x: 72, y: 47, label: "追堵压迫" },
+      { x: 62, y: 34, label: "北线封堵" },
+    ],
+    characters: [
+      { role: "mao", x: 39, y: 39, title: "毛主席", line: "先避其锋，保存主力。" },
+      { role: "enemy", x: 72, y: 42, title: "敌军指挥官", line: "压缩渡口，阻断西进。" },
+    ],
+    dialogues: {
+      commander: "土城方向不宜硬拼，迅速转向赤水河，先把主力带出被动。",
+      staff: "红军第1、中央纵队正沿赤水河西侧机动，渡口窗口很短。",
+      enemy: "发现红军西移，命令追堵部队压向渡口。",
+    },
     choices: [
       ["向西渡赤水", "利用敌军判断空隙保存主力，争取战略机动。"],
       ["原地固守", "风险极高，容易被优势兵力压缩。"],
@@ -43,6 +61,24 @@ const phases = [
       { x: 40, y: 25 },
       { x: 44, y: 36 },
     ],
+    redSteps: [
+      { x: 56, y: 51, label: "回撤转向" },
+      { x: 43, y: 39, label: "回师遵义" },
+      { x: 39, y: 22, label: "夺回主动" },
+    ],
+    enemySteps: [
+      { x: 76, y: 58, label: "尾追迟滞" },
+      { x: 69, y: 35, label: "误判西进" },
+    ],
+    characters: [
+      { role: "mao", x: 45, y: 34, title: "毛主席", line: "敌动我转，回师遵义。" },
+      { role: "enemy", x: 70, y: 35, title: "敌军电台", line: "目标方向变化，情报滞后。" },
+    ],
+    dialogues: {
+      commander: "敌军主力被牵动，遵义方向出现战机，立即回师。",
+      staff: "二渡后路线已重算，红军主力正向遵义方向集结。",
+      enemy: "红军并未持续西进，前线判断出现偏差。",
+    },
     choices: [
       ["回师遵义", "抓住敌军部署空隙，体现运动战的主动性。"],
       ["继续西进", "可能避开正面压力，但会错失战役主动。"],
@@ -69,6 +105,25 @@ const phases = [
       { x: 72, y: 61 },
       { x: 64, y: 54 },
     ],
+    redSteps: [
+      { x: 40, y: 25, label: "再度西渡" },
+      { x: 56, y: 47, label: "制造错觉" },
+      { x: 75, y: 63, label: "牵动敌军" },
+    ],
+    enemySteps: [
+      { x: 77, y: 26, label: "北线误判" },
+      { x: 88, y: 55, label: "东线追击" },
+      { x: 52, y: 72, label: "南线调动" },
+    ],
+    characters: [
+      { role: "mao", x: 56, y: 43, title: "毛主席", line: "虚实相生，调动敌军。" },
+      { role: "enemy", x: 82, y: 55, title: "敌军指挥官", line: "红军主力仍向西？" },
+    ],
+    dialogues: {
+      commander: "佯动不是退却，是把敌军判断引向错误方向。",
+      staff: "敌军三线兵力被牵引，地图上蓝线正在向西侧聚拢。",
+      enemy: "各部注意，红军似乎再次西渡，立即调整围堵方向。",
+    },
     choices: [
       ["再次西渡佯动", "以行动制造错觉，牵引敌军兵力。"],
       ["公开主攻路线", "会让敌军提前封堵关键通道。"],
@@ -95,6 +150,25 @@ const phases = [
       { x: 56, y: 49 },
       { x: 50, y: 40 },
     ],
+    redSteps: [
+      { x: 75, y: 63, label: "摆脱视线" },
+      { x: 56, y: 49, label: "秘密东渡" },
+      { x: 35, y: 21, label: "跳出合围" },
+    ],
+    enemySteps: [
+      { x: 88, y: 61, label: "被牵制" },
+      { x: 70, y: 24, label: "判断滞后" },
+      { x: 49, y: 72, label: "封堵落空" },
+    ],
+    characters: [
+      { role: "mao", x: 50, y: 40, title: "毛主席", line: "抓住窗口，跳出合围。" },
+      { role: "enemy", x: 70, y: 24, title: "敌军电台", line: "目标突然消失。" },
+    ],
+    dialogues: {
+      commander: "敌军被连续调动，突破窗口已经出现，秘密东渡并迅速南下。",
+      staff: "红军路线已脱离主要封锁线，下一步进入战略转移新局面。",
+      enemy: "前线报告红军方向突变，原封堵线失效。",
+    },
     choices: [
       ["秘密东渡并南下", "利用敌军错判跳出合围，形成战略转移新局面。"],
       ["与敌决战", "不符合当时敌我力量对比。"],
@@ -114,11 +188,19 @@ const battleMap = document.querySelector("#battleMap");
 const battleLegend = document.querySelector("#battleLegend");
 const battleTicker = document.querySelector("#battleTicker");
 const warEffects = document.querySelector("#warEffects");
+const characterLayer = document.querySelector("#characterLayer");
+const commanderLine = document.querySelector("#commanderLine");
+const staffLine = document.querySelector("#staffLine");
+const enemyLine = document.querySelector("#enemyLine");
+const soundToggle = document.querySelector("#toggleSound");
 const toast = document.querySelector("#toast");
 const registerDialog = document.querySelector("#registerDialog");
 const registerForm = document.querySelector("#registerForm");
 
 let activePhase = 0;
+let soundEnabled = false;
+let audioContext = null;
+let ambienceTimer = null;
 
 function showToast(message) {
   toast.textContent = message;
@@ -130,6 +212,62 @@ function svgElement(name, attributes = {}) {
   const element = document.createElementNS("http://www.w3.org/2000/svg", name);
   Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
   return element;
+}
+
+function ensureAudio() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioContext.state === "suspended") audioContext.resume();
+  return audioContext;
+}
+
+function playTone({ frequency = 180, duration = 0.18, type = "sine", gain = 0.05, slideTo = null }) {
+  if (!soundEnabled) return;
+  const ctx = ensureAudio();
+  const osc = ctx.createOscillator();
+  const amp = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+  if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, ctx.currentTime + duration);
+  amp.gain.setValueAtTime(0.0001, ctx.currentTime);
+  amp.gain.exponentialRampToValueAtTime(gain, ctx.currentTime + 0.02);
+  amp.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+  osc.connect(amp);
+  amp.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + duration + 0.04);
+}
+
+function playRadioBeep() {
+  playTone({ frequency: 760, duration: 0.08, type: "square", gain: 0.035 });
+  window.setTimeout(() => playTone({ frequency: 520, duration: 0.09, type: "square", gain: 0.03 }), 90);
+}
+
+function playExplosion() {
+  playTone({ frequency: 95, duration: 0.48, type: "sawtooth", gain: 0.07, slideTo: 42 });
+  window.setTimeout(() => playTone({ frequency: 160, duration: 0.16, type: "triangle", gain: 0.035, slideTo: 70 }), 120);
+}
+
+function playMarch() {
+  [0, 150, 300].forEach((delay) => {
+    window.setTimeout(() => playTone({ frequency: 132, duration: 0.08, type: "triangle", gain: 0.025 }), delay);
+  });
+}
+
+function playPhaseSound() {
+  if (!soundEnabled) return;
+  playRadioBeep();
+  window.setTimeout(playMarch, 140);
+  window.setTimeout(playExplosion, 420);
+}
+
+function startAmbience() {
+  if (ambienceTimer) window.clearInterval(ambienceTimer);
+  ambienceTimer = window.setInterval(() => {
+    if (!soundEnabled) return;
+    playTone({ frequency: 55 + Math.random() * 18, duration: 0.34, type: "sine", gain: 0.018, slideTo: 42 });
+  }, 2600);
 }
 
 function addMovingUnit(pathData, className, duration, delay = 0) {
@@ -165,6 +303,25 @@ function addArtilleryShell(pathData, delay = 0) {
   });
   shell.appendChild(motion);
   battleMap.appendChild(shell);
+}
+
+function renderStepMarkers(steps, side) {
+  steps.forEach((step, index) => {
+    const group = svgElement("g", { class: `route-step ${side}-step` });
+    group.appendChild(svgElement("circle", {
+      cx: step.x,
+      cy: step.y,
+      r: "2.25",
+      class: `step-marker ${side === "enemy" ? "enemy-step" : ""}`,
+    }));
+    const number = svgElement("text", { x: step.x, y: step.y + 0.05, class: "step-number" });
+    number.textContent = `${index + 1}`;
+    group.appendChild(number);
+    const caption = svgElement("text", { x: step.x + 3, y: step.y + 4.1, class: "step-caption" });
+    caption.textContent = `${side === "enemy" ? "蓝" : "红"}${index + 1} ${step.label}`;
+    group.appendChild(caption);
+    battleMap.appendChild(group);
+  });
 }
 
 function createEffectNode(className, x, y, extraStyles = {}) {
@@ -215,6 +372,28 @@ function renderWarEffects(phase) {
   });
 }
 
+function renderCharacters(phase) {
+  characterLayer.innerHTML = "";
+  phase.characters.forEach((character) => {
+    const card = document.createElement("div");
+    card.className = `map-character ${character.role === "enemy" ? "enemy-card" : "commander-card"}`;
+    card.style.left = `${character.x}%`;
+    card.style.top = `${character.y}%`;
+    const portraitClass = character.role === "enemy" ? "portrait-enemy" : "portrait-mao";
+    card.innerHTML = `
+      <div class="portrait ${portraitClass}" aria-hidden="true"></div>
+      <div><strong>${character.title}</strong><span>${character.line}</span></div>
+    `;
+    characterLayer.appendChild(card);
+  });
+}
+
+function renderDialogues(phase) {
+  commanderLine.textContent = phase.dialogues.commander;
+  staffLine.textContent = phase.dialogues.staff;
+  enemyLine.textContent = phase.dialogues.enemy;
+}
+
 function renderBattleMap(phase) {
   battleMap.innerHTML = "";
 
@@ -247,6 +426,8 @@ function renderBattleMap(phase) {
   addMovingUnit(phase.redPath, "moving-red", 5.2, 2.2);
   phase.enemyPaths.forEach((pathData, index) => addMovingUnit(pathData, "moving-enemy", 6.4 + index * 0.6, index * 0.75));
   phase.enemyPaths.slice(0, 2).forEach((pathData, index) => addArtilleryShell(pathData, index * 0.6));
+  renderStepMarkers(phase.redSteps, "red");
+  renderStepMarkers(phase.enemySteps, "enemy");
 
   phase.forces.forEach((force) => {
     const group = svgElement("g", { class: `force ${force.type}-force-group` });
@@ -273,6 +454,8 @@ function renderBattleMap(phase) {
   `;
   battleTicker.textContent = phase.narrative;
   renderWarEffects(phase);
+  renderCharacters(phase);
+  renderDialogues(phase);
 }
 
 function renderPhase(index) {
@@ -283,6 +466,7 @@ function renderPhase(index) {
   hudState.textContent = phase.hud;
   feedback.textContent = "选择一个行动方案，系统将从军事原则、风险与历史依据给出反馈。";
   renderBattleMap(phase);
+  playPhaseSound();
 
   steps.forEach((step) => {
     step.classList.toggle("active", Number(step.dataset.phase) === index);
@@ -298,6 +482,7 @@ function renderPhase(index) {
       document.querySelectorAll(".choice").forEach((item) => item.classList.remove("selected"));
       button.classList.add("selected");
       feedback.textContent = response;
+      playRadioBeep();
       showToast(choiceIndex === 0 ? "决策符合历史推演重点" : "已记录风险判断，可用于课堂讨论");
     });
     choiceList.appendChild(button);
@@ -306,6 +491,22 @@ function renderPhase(index) {
 
 steps.forEach((step) => {
   step.addEventListener("click", () => renderPhase(Number(step.dataset.phase)));
+});
+
+soundToggle.addEventListener("click", () => {
+  soundEnabled = !soundEnabled;
+  soundToggle.classList.toggle("sound-on", soundEnabled);
+  soundToggle.textContent = soundEnabled ? "响" : "声";
+  if (soundEnabled) {
+    ensureAudio();
+    playRadioBeep();
+    startAmbience();
+    showToast("战争音效已开启：电台、行军与炮火声将随推演播放");
+  } else {
+    if (ambienceTimer) window.clearInterval(ambienceTimer);
+    ambienceTimer = null;
+    showToast("战争音效已关闭");
+  }
 });
 
 document.querySelector("#toggleVr").addEventListener("click", (event) => {
@@ -337,6 +538,7 @@ document.querySelectorAll(".source").forEach((source) => {
 });
 
 document.querySelector("#startWargame").addEventListener("click", () => {
+  playExplosion();
   showToast("军棋推演比赛已创建：四渡赤水情境赛");
 });
 

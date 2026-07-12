@@ -62,6 +62,7 @@
               <p id="phaseCaption">一渡赤水 · 摆脱被动，寻找机动空间</p>
             </div>
             <div class="tool-actions">
+              <button id="toggleSound" class="icon-button sound-toggle" type="button" aria-label="开启战争音效">声</button>
               <button id="toggleVr" class="icon-button" type="button" aria-label="切换裸眼3D视角">3D</button>
               <button id="toggleMap" class="icon-button" type="button" aria-label="切换军事地图层">图</button>
             </div>
@@ -72,6 +73,7 @@
             <div class="map-overlay">
               <svg id="battleMap" class="battle-map" viewBox="0 0 100 100" aria-label="四渡赤水动态军事态势图"></svg>
               <div class="war-effects" id="warEffects" aria-hidden="true"></div>
+              <div class="character-layer" id="characterLayer" aria-label="战役人物形象层"></div>
               <button class="hotspot active" style="left: 31%; top: 56%" data-point="土城受挫后，红军迅速调整渡河方向。">土城</button>
               <button class="hotspot" style="left: 48%; top: 43%" data-point="二渡赤水后回师遵义，形成局部主动。">遵义</button>
               <button class="hotspot" style="left: 66%; top: 62%" data-point="虚实结合，牵动敌军判断。">赤水河</button>
@@ -82,6 +84,30 @@
               <span>视角：中央红军指挥所</span>
               <span>资料层：地图 / 文献 / 影视片段</span>
               <span id="hudState">风险：高 · 机动窗口：短</span>
+            </div>
+          </div>
+
+          <div class="npc-console" aria-label="战场NPC电台对话">
+            <div class="npc-speaker commander">
+              <div class="portrait portrait-mao" aria-hidden="true"></div>
+              <div>
+                <strong id="commanderSpeaker">毛主席视角</strong>
+                <p id="commanderLine">保持机动，先摆脱被动，再寻战机。</p>
+              </div>
+            </div>
+            <div class="npc-speaker staff">
+              <div class="portrait portrait-staff" aria-hidden="true"></div>
+              <div>
+                <strong id="staffSpeaker">红军参谋</strong>
+                <p id="staffLine">地图、军力和渡口信息已同步。</p>
+              </div>
+            </div>
+            <div class="npc-speaker enemy">
+              <div class="portrait portrait-enemy" aria-hidden="true"></div>
+              <div>
+                <strong id="enemySpeaker">敌军电台</strong>
+                <p id="enemyLine">侦察报告混乱，需重新判断红军方向。</p>
+              </div>
             </div>
           </div>
 
