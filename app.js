@@ -177,13 +177,231 @@ const phases = [
   },
 ];
 
+const liaoshenPhases = [
+  {
+    caption: "锦州攻坚 · 关闭东北大门",
+    situation: "锦州是东北与华北联系的关键通道，攻克锦州意味着切断敌军陆上退路。",
+    hud: "目标：锦州 · 关键：封闭辽西走廊",
+    narrative: "辽沈第一阶段：集中兵力夺取锦州，先关门，再打援。",
+    redPath: "M24 78 C31 74 37 69 44 64 C49 60 53 57 58 54",
+    enemyPaths: ["M76 24 C72 34 66 45 58 54", "M84 80 C75 72 66 62 58 54"],
+    supportPath: "M37 85 C40 76 42 70 44 64",
+    zone: "M35 59 L57 48 L66 62 L43 73 Z",
+    forces: [
+      { type: "red", x: 44, y: 64, label: "锦州攻坚" },
+      { type: "red", x: 37, y: 72, label: "塔山阻援" },
+      { type: "enemy", x: 76, y: 24, label: "长春守军" },
+      { type: "enemy", x: 84, y: 80, label: "海上退路" },
+    ],
+    blasts: [{ x: 44, y: 64 }, { x: 37, y: 72 }],
+    redSteps: [
+      { x: 24, y: 78, label: "集结主力" },
+      { x: 44, y: 64, label: "攻克锦州" },
+      { x: 58, y: 54, label: "封闭通道" },
+    ],
+    enemySteps: [
+      { x: 76, y: 24, label: "北线牵制" },
+      { x: 84, y: 80, label: "企图撤退" },
+    ],
+    characters: [
+      { role: "mao", x: 34, y: 57, title: "战略指挥", line: "先取锦州，关上东北大门。" },
+      { role: "enemy", x: 76, y: 43, title: "敌军电台", line: "锦州压力骤增，请求增援。" },
+    ],
+    dialogues: {
+      commander: "锦州是战役枢纽，先切断敌军与关内联系。",
+      staff: "主攻部队已压向锦州，塔山方向同步准备阻援。",
+      enemy: "锦州告急，辽西走廊可能被切断。",
+    },
+    choices: [
+      ["集中攻锦州", "抓住战役枢纽，先封闭东北大门。"],
+      ["先打长春", "可削弱敌军，但会给锦州方向留下退路。"],
+      ["分兵多路", "看似全面，实际可能削弱主攻力量。"],
+    ],
+  },
+  {
+    caption: "塔山阻援 · 顶住海陆增援",
+    situation: "塔山方向是敌军驰援锦州的重要通道，必须阻住援军才能保障主攻。",
+    hud: "目标：塔山 · 风险：援军压力高",
+    narrative: "辽沈第二阶段：塔山阻援顶住敌军反扑，保证锦州攻坚持续推进。",
+    redPath: "M37 82 C39 76 41 72 43 69 C45 66 47 63 50 60",
+    enemyPaths: ["M83 82 C75 76 66 69 50 60", "M69 30 C65 42 59 52 50 60"],
+    supportPath: "M43 69 C45 62 44 57 42 51",
+    zone: "M34 66 L54 56 L64 70 L42 79 Z",
+    forces: [
+      { type: "red", x: 43, y: 69, label: "塔山阵地" },
+      { type: "red", x: 50, y: 60, label: "火力支撑" },
+      { type: "enemy", x: 83, y: 82, label: "海路援军" },
+      { type: "enemy", x: 69, y: 30, label: "北线援军" },
+    ],
+    blasts: [{ x: 43, y: 69 }, { x: 50, y: 60 }, { x: 59, y: 66 }],
+    redSteps: [
+      { x: 37, y: 82, label: "构筑阵地" },
+      { x: 43, y: 69, label: "阻击援军" },
+      { x: 50, y: 60, label: "稳住主攻" },
+    ],
+    enemySteps: [
+      { x: 83, y: 82, label: "海陆增援" },
+      { x: 69, y: 30, label: "侧翼压迫" },
+      { x: 59, y: 66, label: "反复冲击" },
+    ],
+    characters: [
+      { role: "mao", x: 41, y: 61, title: "前线指挥", line: "塔山必须守住。" },
+      { role: "enemy", x: 72, y: 67, title: "敌军指挥", line: "突破塔山，救援锦州。" },
+    ],
+    dialogues: {
+      commander: "锦州攻坚能否成功，塔山阻援是关键支点。",
+      staff: "蓝线援军正向塔山压来，红线阵地必须稳住。",
+      enemy: "集中火力突破塔山，否则锦州将失守。",
+    },
+    choices: [
+      ["坚守塔山阵地", "保障锦州主攻，是典型的打援配合作战。"],
+      ["撤出阻援阵地", "会使锦州主攻遭受侧后威胁。"],
+      ["放弃锦州转攻沈阳", "会失去封闭东北的战役节奏。"],
+    ],
+  },
+  {
+    caption: "长春争取 · 促成守军转化",
+    situation: "锦州失守后，长春守军孤立，政治争取与军事压力共同发挥作用。",
+    hud: "目标：长春 · 方式：围困与争取并用",
+    narrative: "辽沈第三阶段：军事围困结合政治争取，减少城市攻坚消耗。",
+    redPath: "M44 64 C50 55 58 43 66 28",
+    enemyPaths: ["M66 28 C68 38 70 48 73 58", "M58 54 C61 44 64 35 66 28"],
+    supportPath: "M52 73 C56 58 61 42 66 28",
+    zone: "M58 20 L75 27 L72 43 L55 38 Z",
+    forces: [
+      { type: "red", x: 66, y: 28, label: "围困长春" },
+      { type: "red", x: 58, y: 54, label: "切断联系" },
+      { type: "enemy", x: 70, y: 37, label: "孤立守军" },
+      { type: "crossing", x: 66, y: 28, label: "争取转化" },
+    ],
+    blasts: [{ x: 58, y: 54 }],
+    redSteps: [
+      { x: 44, y: 64, label: "锦州后续" },
+      { x: 58, y: 54, label: "切断联系" },
+      { x: 66, y: 28, label: "争取长春" },
+    ],
+    enemySteps: [
+      { x: 70, y: 37, label: "守军孤立" },
+      { x: 73, y: 58, label: "突围困难" },
+    ],
+    characters: [
+      { role: "mao", x: 60, y: 34, title: "战略指挥", line: "军事压力与政治争取并用。" },
+      { role: "enemy", x: 72, y: 39, title: "长春守军", line: "外援断绝，局势急转。" },
+    ],
+    dialogues: {
+      commander: "能减少牺牲，就要把军事压力和政治争取结合起来。",
+      staff: "长春方向蓝军联系被切断，守军处于孤立状态。",
+      enemy: "补给与外援受阻，继续固守的代价不断上升。",
+    },
+    choices: [
+      ["围困争取并用", "减少城市攻坚损失，更符合战役全局。"],
+      ["强攻长春", "可能增加城市战损耗。"],
+      ["暂不处理长春", "可能留下战役后方隐患。"],
+    ],
+  },
+  {
+    caption: "辽西会战 · 解放沈阳营口",
+    situation: "锦州和长春局势明朗后，东北野战军转入追歼与城市解放阶段。",
+    hud: "目标：辽西、沈阳、营口 · 态势：追歼收束",
+    narrative: "辽沈第四阶段：辽西会战后，沈阳、营口相继解放，东北全境进入新局面。",
+    redPath: "M58 54 C64 57 70 58 76 58 C82 62 88 70 93 82",
+    enemyPaths: ["M76 58 C83 61 91 71 93 82", "M69 28 C73 40 76 49 76 58", "M88 82 C82 72 78 64 76 58"],
+    supportPath: "M44 64 C55 62 66 60 76 58",
+    zone: "M66 51 L88 56 L96 86 L75 73 Z",
+    forces: [
+      { type: "red", x: 76, y: 58, label: "沈阳方向" },
+      { type: "red", x: 93, y: 82, label: "营口方向" },
+      { type: "enemy", x: 82, y: 66, label: "辽西溃退" },
+      { type: "enemy", x: 69, y: 28, label: "北线残部" },
+    ],
+    blasts: [{ x: 76, y: 58 }, { x: 86, y: 70 }],
+    redSteps: [
+      { x: 58, y: 54, label: "辽西合围" },
+      { x: 76, y: 58, label: "解放沈阳" },
+      { x: 93, y: 82, label: "控制营口" },
+    ],
+    enemySteps: [
+      { x: 82, y: 66, label: "兵团溃退" },
+      { x: 88, y: 82, label: "退路受阻" },
+      { x: 69, y: 28, label: "残部失联" },
+    ],
+    characters: [
+      { role: "mao", x: 73, y: 50, title: "战役指挥", line: "合围追歼，扩大战果。" },
+      { role: "enemy", x: 83, y: 68, title: "敌军电台", line: "辽西方向失去联络。" },
+    ],
+    dialogues: {
+      commander: "锦州已定，长春已明，辽西追歼要迅速收束战役。",
+      staff: "红线正向沈阳、营口推进，蓝线退路被连续压缩。",
+      enemy: "各部通信中断，沈阳方向防线动摇。",
+    },
+    choices: [
+      ["追歼辽西残部", "扩大战果并推动沈阳、营口解放。"],
+      ["停止追击整补", "可能给残部重组时间。"],
+      ["单攻营口", "会削弱沈阳方向的战役协同。"],
+    ],
+  },
+];
+
+const campaigns = {
+  sidu: {
+    name: "四渡赤水",
+    stageTitle: "四渡赤水：毛泽东第一视角决策舱",
+    image: "assets/siduchishui-panorama.png",
+    alt: "四渡赤水沉浸式战役地图视窗",
+    phases,
+    timeline: [
+      ["一渡", "摆脱围堵"],
+      ["二渡", "回师遵义"],
+      ["三渡", "调动敌军"],
+      ["四渡", "跳出合围"],
+    ],
+    hotspots: [
+      { label: "土城", x: 31, y: 56, point: "土城受挫后，红军迅速调整渡河方向。" },
+      { label: "遵义", x: 48, y: 43, point: "二渡赤水后回师遵义，形成局部主动。" },
+      { label: "赤水河", x: 66, y: 62, point: "虚实结合，牵动敌军判断。" },
+    ],
+    sources: ["战役地图：赤水河流域路线", "文献摘编：运动战与战略转移", "影视片段：渡河与指挥会议"],
+    speakers: ["毛主席视角", "红军参谋", "敌军电台"],
+    hudView: "视角：中央红军指挥所",
+    hudLayer: "资料层：地图 / 文献 / 影视片段",
+  },
+  liaoshen: {
+    name: "辽沈战役",
+    stageTitle: "辽沈战役：东北战场动态推演舱",
+    image: "assets/liaoshen-panorama.png",
+    alt: "辽沈战役东北战场动态态势图",
+    phases: liaoshenPhases,
+    timeline: [
+      ["锦州", "关闭大门"],
+      ["塔山", "阻击援军"],
+      ["长春", "围困争取"],
+      ["辽西", "追歼收束"],
+    ],
+    hotspots: [
+      { label: "锦州", x: 44, y: 64, point: "锦州是东北与华北联系的关门点，攻克后敌军退路被压缩。" },
+      { label: "塔山", x: 37, y: 72, point: "塔山阻援保障锦州攻坚，是战役协同的关键支点。" },
+      { label: "沈阳", x: 76, y: 58, point: "辽西会战后，沈阳方向成为收束东北战局的重要节点。" },
+    ],
+    sources: ["战役地图：东北战场与辽西走廊", "文献摘编：关门打狗与攻锦打援", "影视片段：锦州攻坚与塔山阻援"],
+    speakers: ["战役指挥", "东北野战军参谋", "敌军电台"],
+    hudView: "视角：东北野战军指挥所",
+    hudLayer: "资料层：东北地图 / 战役文献 / 影视片段",
+  },
+};
+
 const phaseCaption = document.querySelector("#phaseCaption");
 const situation = document.querySelector("#situation");
 const hudState = document.querySelector("#hudState");
+const hudView = document.querySelector("#hudView");
+const hudLayer = document.querySelector("#hudLayer");
 const choiceList = document.querySelector("#choiceList");
 const feedback = document.querySelector("#feedback");
 const steps = document.querySelectorAll(".step");
+const tabs = document.querySelectorAll(".tab[data-campaign]");
+const campaignChapters = document.querySelectorAll(".chapter[data-campaign]");
 const panorama = document.querySelector("#panorama");
+const mapScene = document.querySelector("#mapScene");
+const battleImage = document.querySelector("#battleImage");
 const battleMap = document.querySelector("#battleMap");
 const battleLegend = document.querySelector("#battleLegend");
 const battleTicker = document.querySelector("#battleTicker");
@@ -192,20 +410,100 @@ const characterLayer = document.querySelector("#characterLayer");
 const commanderLine = document.querySelector("#commanderLine");
 const staffLine = document.querySelector("#staffLine");
 const enemyLine = document.querySelector("#enemyLine");
+const commanderSpeaker = document.querySelector("#commanderSpeaker");
+const staffSpeaker = document.querySelector("#staffSpeaker");
+const enemySpeaker = document.querySelector("#enemySpeaker");
 const soundToggle = document.querySelector("#toggleSound");
+const sourceButtons = document.querySelectorAll(".source");
+const hotspotButtons = document.querySelectorAll(".hotspot");
+const stageTitle = document.querySelector(".stage-toolbar h2");
 const toast = document.querySelector("#toast");
 const registerDialog = document.querySelector("#registerDialog");
 const registerForm = document.querySelector("#registerForm");
 
 let activePhase = 0;
+let currentCampaignKey = "sidu";
+let currentCampaign = campaigns[currentCampaignKey];
 let soundEnabled = false;
 let audioContext = null;
 let ambienceTimer = null;
+const viewState = { scale: 1, rotate: 0, x: 0, y: 0 };
+let dragState = null;
 
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
   window.setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function applyMapView() {
+  mapScene.style.transform = `translate(${viewState.x}px, ${viewState.y}px) rotate(${viewState.rotate}deg) scale(${viewState.scale})`;
+}
+
+function resetMapView() {
+  viewState.scale = 1;
+  viewState.rotate = 0;
+  viewState.x = 0;
+  viewState.y = 0;
+  applyMapView();
+}
+
+function adjustZoom(delta) {
+  viewState.scale = Math.min(2.8, Math.max(0.72, Number((viewState.scale + delta).toFixed(2))));
+  applyMapView();
+}
+
+function adjustRotate(delta) {
+  viewState.rotate = (viewState.rotate + delta) % 360;
+  applyMapView();
+}
+
+function updateCampaignChrome() {
+  stageTitle.textContent = currentCampaign.stageTitle;
+  battleImage.src = currentCampaign.image;
+  battleImage.alt = currentCampaign.alt;
+  commanderSpeaker.textContent = currentCampaign.speakers[0];
+  staffSpeaker.textContent = currentCampaign.speakers[1];
+  enemySpeaker.textContent = currentCampaign.speakers[2];
+  hudView.textContent = currentCampaign.hudView;
+  hudLayer.textContent = currentCampaign.hudLayer;
+
+  steps.forEach((step, index) => {
+    const item = currentCampaign.timeline[index];
+    step.querySelector("b").textContent = item[0];
+    step.querySelector("span").textContent = item[1];
+  });
+
+  hotspotButtons.forEach((button, index) => {
+    const hotspot = currentCampaign.hotspots[index];
+    button.textContent = hotspot.label;
+    button.dataset.point = hotspot.point;
+    button.style.left = `${hotspot.x}%`;
+    button.style.top = `${hotspot.y}%`;
+    button.classList.toggle("active", index === 0);
+  });
+
+  sourceButtons.forEach((button, index) => {
+    button.textContent = currentCampaign.sources[index];
+    button.classList.toggle("active", index === 0);
+  });
+
+  tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.campaign === currentCampaignKey));
+  campaignChapters.forEach((chapter) => chapter.classList.toggle("active", chapter.dataset.campaign === currentCampaignKey));
+}
+
+function switchCampaign(key) {
+  if (!campaigns[key]) {
+    showToast("该模块仍在规划中，当前先开放四渡赤水与辽沈战役。");
+    return;
+  }
+  currentCampaignKey = key;
+  currentCampaign = campaigns[key];
+  activePhase = 0;
+  resetMapView();
+  updateCampaignChrome();
+  renderPhase(0);
+  showToast(`已切换到${currentCampaign.name}动态推演`);
 }
 
 function svgElement(name, attributes = {}) {
@@ -460,7 +758,7 @@ function renderBattleMap(phase) {
 
 function renderPhase(index) {
   activePhase = index;
-  const phase = phases[index];
+  const phase = currentCampaign.phases[index];
   phaseCaption.textContent = phase.caption;
   situation.textContent = phase.situation;
   hudState.textContent = phase.hud;
@@ -489,6 +787,14 @@ function renderPhase(index) {
   });
 }
 
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => switchCampaign(tab.dataset.campaign));
+});
+
+campaignChapters.forEach((chapter) => {
+  chapter.addEventListener("click", () => switchCampaign(chapter.dataset.campaign));
+});
+
 steps.forEach((step) => {
   step.addEventListener("click", () => renderPhase(Number(step.dataset.phase)));
 });
@@ -513,6 +819,51 @@ document.querySelector("#toggleVr").addEventListener("click", (event) => {
   panorama.classList.toggle("vr");
   event.currentTarget.classList.toggle("active");
   showToast(panorama.classList.contains("vr") ? "已开启裸眼3D视角模拟" : "已恢复标准地图视角");
+});
+
+document.querySelector("#togglePanorama").addEventListener("click", (event) => {
+  panorama.classList.toggle("fullscreen");
+  event.currentTarget.classList.toggle("active");
+  showToast(panorama.classList.contains("fullscreen") ? "已进入全景大图模式，可拖拽、缩放、旋转" : "已退出全景大图模式");
+});
+
+document.querySelector("#zoomIn").addEventListener("click", () => adjustZoom(0.16));
+document.querySelector("#zoomOut").addEventListener("click", () => adjustZoom(-0.16));
+document.querySelector("#rotateLeft").addEventListener("click", () => adjustRotate(-12));
+document.querySelector("#rotateRight").addEventListener("click", () => adjustRotate(12));
+document.querySelector("#resetView").addEventListener("click", () => {
+  resetMapView();
+  showToast("地图视角已复位");
+});
+
+panorama.addEventListener("wheel", (event) => {
+  event.preventDefault();
+  adjustZoom(event.deltaY < 0 ? 0.08 : -0.08);
+}, { passive: false });
+
+panorama.addEventListener("pointerdown", (event) => {
+  if (event.target.closest("button")) return;
+  dragState = { x: event.clientX, y: event.clientY, startX: viewState.x, startY: viewState.y };
+  panorama.classList.add("dragging");
+  panorama.setPointerCapture(event.pointerId);
+});
+
+panorama.addEventListener("pointermove", (event) => {
+  if (!dragState) return;
+  viewState.x = dragState.startX + event.clientX - dragState.x;
+  viewState.y = dragState.startY + event.clientY - dragState.y;
+  applyMapView();
+});
+
+panorama.addEventListener("pointerup", (event) => {
+  dragState = null;
+  panorama.classList.remove("dragging");
+  if (panorama.hasPointerCapture(event.pointerId)) panorama.releasePointerCapture(event.pointerId);
+});
+
+panorama.addEventListener("pointercancel", () => {
+  dragState = null;
+  panorama.classList.remove("dragging");
 });
 
 document.querySelector("#toggleMap").addEventListener("click", (event) => {
@@ -565,4 +916,5 @@ registerForm.addEventListener("submit", (event) => {
   showToast("注册成功，已进入沉浸式学习模式");
 });
 
+updateCampaignChrome();
 renderPhase(activePhase);

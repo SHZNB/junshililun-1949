@@ -20,10 +20,10 @@
           </div>
         </div>
         <nav class="module-tabs" aria-label="课程模块">
-          <button class="tab active" type="button">四渡赤水</button>
-          <button class="tab" type="button">辽沈战役</button>
-          <button class="tab" type="button">抗美援朝</button>
-          <button class="tab" type="button">军棋赛事</button>
+          <button class="tab active" type="button" data-campaign="sidu">四渡赤水</button>
+          <button class="tab" type="button" data-campaign="liaoshen">辽沈战役</button>
+          <button class="tab" type="button" data-campaign="korea">抗美援朝</button>
+          <button class="tab" type="button" data-campaign="wargame">军棋赛事</button>
         </nav>
         <button class="student-card" id="openRegister" type="button">
           <span id="studentName">学生注册</span>
@@ -37,13 +37,13 @@
             <span>毛泽东军事思想</span>
             <small>战略转移与运动战</small>
           </button>
-          <button class="chapter" type="button">
+          <button class="chapter" type="button" data-campaign="sidu">
             <span>四渡赤水战役</span>
             <small>1935 · 决策推演</small>
           </button>
-          <button class="chapter disabled" type="button">
+          <button class="chapter" type="button" data-campaign="liaoshen">
             <span>辽沈战役</span>
-            <small>模块规划中</small>
+            <small>1948 · 东北决战</small>
           </button>
           <button class="chapter disabled" type="button">
             <span>抗美援朝战争</span>
@@ -63,26 +63,34 @@
             </div>
             <div class="tool-actions">
               <button id="toggleSound" class="icon-button sound-toggle" type="button" aria-label="开启战争音效">声</button>
+              <button id="togglePanorama" class="icon-button" type="button" aria-label="切换全景大图">全</button>
+              <button id="zoomOut" class="icon-button" type="button" aria-label="缩小地图">-</button>
+              <button id="zoomIn" class="icon-button" type="button" aria-label="放大地图">+</button>
+              <button id="rotateLeft" class="icon-button" type="button" aria-label="地图左旋">↺</button>
+              <button id="rotateRight" class="icon-button" type="button" aria-label="地图右旋">↻</button>
+              <button id="resetView" class="icon-button" type="button" aria-label="复位地图视角">复</button>
               <button id="toggleVr" class="icon-button" type="button" aria-label="切换裸眼3D视角">3D</button>
               <button id="toggleMap" class="icon-button" type="button" aria-label="切换军事地图层">图</button>
             </div>
           </div>
 
           <div class="panorama" id="panorama">
-            <img src="assets/siduchishui-panorama.png" alt="四渡赤水沉浸式战役地图视窗" />
-            <div class="map-overlay">
-              <svg id="battleMap" class="battle-map" viewBox="0 0 100 100" aria-label="四渡赤水动态军事态势图"></svg>
-              <div class="war-effects" id="warEffects" aria-hidden="true"></div>
-              <div class="character-layer" id="characterLayer" aria-label="战役人物形象层"></div>
-              <button class="hotspot active" style="left: 31%; top: 56%" data-point="土城受挫后，红军迅速调整渡河方向。">土城</button>
-              <button class="hotspot" style="left: 48%; top: 43%" data-point="二渡赤水后回师遵义，形成局部主动。">遵义</button>
-              <button class="hotspot" style="left: 66%; top: 62%" data-point="虚实结合，牵动敌军判断。">赤水河</button>
-              <div class="battle-legend" id="battleLegend"></div>
-              <div class="battle-ticker" id="battleTicker">动态推演载入中</div>
+            <div class="map-scene" id="mapScene">
+              <img id="battleImage" src="assets/siduchishui-panorama.png" alt="四渡赤水沉浸式战役地图视窗" />
+              <div class="map-overlay">
+                <svg id="battleMap" class="battle-map" viewBox="0 0 100 100" aria-label="动态军事态势图"></svg>
+                <div class="war-effects" id="warEffects" aria-hidden="true"></div>
+                <div class="character-layer" id="characterLayer" aria-label="战役人物形象层"></div>
+                <button class="hotspot active" style="left: 31%; top: 56%" data-point="土城受挫后，红军迅速调整渡河方向。">土城</button>
+                <button class="hotspot" style="left: 48%; top: 43%" data-point="二渡赤水后回师遵义，形成局部主动。">遵义</button>
+                <button class="hotspot" style="left: 66%; top: 62%" data-point="虚实结合，牵动敌军判断。">赤水河</button>
+                <div class="battle-legend" id="battleLegend"></div>
+                <div class="battle-ticker" id="battleTicker">动态推演载入中</div>
+              </div>
             </div>
             <div class="immersion-hud">
-              <span>视角：中央红军指挥所</span>
-              <span>资料层：地图 / 文献 / 影视片段</span>
+              <span id="hudView">视角：中央红军指挥所</span>
+              <span id="hudLayer">资料层：地图 / 文献 / 影视片段</span>
               <span id="hudState">风险：高 · 机动窗口：短</span>
             </div>
           </div>
