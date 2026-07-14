@@ -606,10 +606,27 @@ const stageTitle = document.querySelector(".stage-toolbar h2");
 const toast = document.querySelector("#toast");
 const registerDialog = document.querySelector("#registerDialog");
 const registerForm = document.querySelector("#registerForm");
+const quizDialog = document.querySelector("#quizDialog");
+const quizForm = document.querySelector("#quizForm");
+const openQuizButton = document.querySelector("#openQuiz");
+const closeQuizButton = document.querySelector("#closeQuiz");
+const quickformEndpointInput = document.querySelector("#quickformEndpoint");
+const quizContext = document.querySelector("#quizContext");
+const quizDecision = document.querySelector("#quizDecision");
+const quizStatus = document.querySelector("#quizStatus");
+const quizSchool = document.querySelector("#quizSchool");
+const quizStudentId = document.querySelector("#quizStudentId");
+const quizName = document.querySelector("#quizName");
+const quizClass = document.querySelector("#quizClass");
+const quizCampaign = document.querySelector("#quizCampaign");
+const quizPhase = document.querySelector("#quizPhase");
+const quizSubmittedAt = document.querySelector("#quizSubmittedAt");
+const saveQuizDraftButton = document.querySelector("#saveQuizDraft");
 
 let activePhase = 0;
 let currentCampaignKey = "sidu";
 let currentCampaign = campaigns[currentCampaignKey];
+let selectedDecision = "";
 let soundEnabled = false;
 let audioContext = null;
 let ambienceTimer = null;
@@ -620,6 +637,112 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
   window.setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function setQuizStatus(message, type = "") {
+  quizStatus.textContent = message;
+  quizStatus.classList.remove("success", "error");
+  if (type) quizStatus.classList.add(type);
+}
+
+function getPhase() {
+  return currentCampaign.phases[activePhase];
+}
+
+function getQuickFormEndpoint() {
+  return quickformEndpointInput.value.trim();
+}
+
+function isQuickFormEndpoint(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && (url.hostname === "www.quickform.cn" || url.hostname === "quickform.cn" || url.hostname.endsWith(".quickform.cn"));
+  } catch {
+    return false;
+  }
+}
+
+function loadQuizDraft() {
+  quickformEndpointInput.value = window.localStorage.getItem("quickformEndpoint") || "";
+  const raw = window.localStorage.getItem("militaryQuizDraft");
+  if (!raw) return;
+  try {
+    const draft = JSON.parse(raw);
+    quickformEndpointInput.value = window.localStorage.getItem("quickformEndpoint") || draft.quickformEndpoint || "";
+    quizSchool.value = draft.school || "";
+    quizStudentId.value = draft.studentId || "";
+    quizName.value = draft.name || "";
+    quizClass.value = draft.className || "";
+    document.querySelector("#quizSituation").value = draft.routeUnderstanding || "";
+    document.querySelector("#quizReasoning").value = draft.reasoning || "";
+    document.querySelector("#quizReflection").value = draft.peaceReflection || "";
+  } catch {
+    window.localStorage.removeItem("militaryQuizDraft");
+  }
+}
+
+function saveQuizDraft() {
+  const formData = new FormData(quizForm);
+  const draft = Object.fromEntries(formData.entries());
+  window.localStorage.setItem("militaryQuizDraft", JSON.stringify(draft));
+  if (getQuickFormEndpoint()) {
+    window.localStorage.setItem("quickformEndpoint", getQuickFormEndpoint());
+  }
+}
+
+function updateQuizContext() {
+  const phase = getPhase();
+  const currentDecision = quizDecision.value || selectedDecision;
+  quizContext.textContent = `${currentCampaign.name} · ${phase.caption}`;
+  quizCampaign.value = currentCampaign.name;
+  quizPhase.value = phase.caption;
+  quizDecision.innerHTML = '<option value="">请选择决策方案</option>';
+  phase.choices.forEach(([label]) => {
+    const option = document.createElement("option");
+    option.value = label;
+    option.textContent = label;
+    quizDecision.appendChild(option);
+  });
+  if (currentDecision) quizDecision.value = currentDecision;
+}
+
+function buildQuizPayload() {
+  const formData = new FormData(quizForm);
+  const payload = Object.fromEntries(formData.entries());
+  payload.campaign = currentCampaign.name;
+  payload.phase = getPhase().caption;
+  payload.phaseIndex = String(activePhase + 1);
+  payload.submittedAt = new Date().toISOString();
+  payload.source = "南京晓庄学院军事战争沉浸式互动平台";
+  payload.pageUrl = window.location.href;
+  payload.feedback = feedback.textContent;
+  return payload;
+}
+
+function submitQuickFormFallback(endpoint, payload) {
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = endpoint;
+  form.target = "quickformSubmitFrame";
+  form.hidden = true;
+
+  Object.entries(payload).forEach(([key, value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  });
+
+  const payloadInput = document.createElement("input");
+  payloadInput.type = "hidden";
+  payloadInput.name = "payload";
+  payloadInput.value = JSON.stringify(payload);
+  form.appendChild(payloadInput);
+
+  document.body.appendChild(form);
+  form.submit();
+  form.remove();
 }
 
 function applyMapView() {
@@ -945,6 +1068,7 @@ function renderBattleMap(phase) {
 function renderPhase(index) {
   activePhase = index;
   const phase = currentCampaign.phases[index];
+  selectedDecision = "";
   phaseCaption.textContent = phase.caption;
   situation.textContent = phase.situation;
   hudState.textContent = phase.hud;
@@ -965,12 +1089,16 @@ function renderPhase(index) {
     button.addEventListener("click", () => {
       document.querySelectorAll(".choice").forEach((item) => item.classList.remove("selected"));
       button.classList.add("selected");
+      selectedDecision = label;
+      if (quizDecision) quizDecision.value = label;
       feedback.textContent = response;
       playRadioBeep();
       showToast(choiceIndex === 0 ? "决策符合历史推演重点" : "已记录风险判断，可用于课堂讨论");
     });
     choiceList.appendChild(button);
   });
+
+  if (quizDialog?.open) updateQuizContext();
 }
 
 tabs.forEach((tab) => {
@@ -1079,6 +1207,84 @@ document.querySelector("#startWargame").addEventListener("click", () => {
   showToast("军棋推演比赛已创建：四渡赤水情境赛");
 });
 
+openQuizButton.addEventListener("click", () => {
+  loadQuizDraft();
+  updateQuizContext();
+  if (!quizStudentId.value) {
+    const studentMeta = document.querySelector("#studentMeta").textContent;
+    const studentId = studentMeta.split("·")[0]?.trim();
+    if (studentId && studentId !== "进入沉浸体验") quizStudentId.value = studentId;
+  }
+  const studentName = document.querySelector("#studentName").textContent.trim();
+  if (!quizName.value && studentName !== "学生注册") quizName.value = studentName;
+  setQuizStatus("请确认学校、学号与答题内容，提交后数据将发送到 QuickForm。");
+  quizDialog.showModal();
+});
+
+closeQuizButton.addEventListener("click", () => {
+  saveQuizDraft();
+  quizDialog.close();
+});
+
+saveQuizDraftButton.addEventListener("click", () => {
+  saveQuizDraft();
+  setQuizStatus("草稿已保存在本机浏览器，稍后可继续填写。", "success");
+  showToast("学生互动答题草稿已保存");
+});
+
+quickformEndpointInput.addEventListener("change", () => {
+  const endpoint = getQuickFormEndpoint();
+  if (!endpoint) return;
+  if (!isQuickFormEndpoint(endpoint)) {
+    setQuizStatus("提交地址必须是 https://www.quickform.cn 或 quickform.cn 的表单地址。", "error");
+    return;
+  }
+  window.localStorage.setItem("quickformEndpoint", endpoint);
+  setQuizStatus("QuickForm 提交地址已保存。", "success");
+});
+
+quizDecision.addEventListener("change", () => {
+  selectedDecision = quizDecision.value;
+});
+
+quizForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  updateQuizContext();
+  quizSubmittedAt.value = new Date().toISOString();
+
+  if (!quizForm.reportValidity()) return;
+
+  const endpoint = getQuickFormEndpoint();
+  if (!isQuickFormEndpoint(endpoint)) {
+    setQuizStatus("请先填写 QuickForm 表单提交地址，地址必须属于 quickform.cn。", "error");
+    quickformEndpointInput.focus();
+    return;
+  }
+
+  const payload = buildQuizPayload();
+  saveQuizDraft();
+  setQuizStatus("正在提交到 QuickForm，请稍候...");
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) throw new Error(`QuickForm返回状态 ${response.status}`);
+
+    window.localStorage.removeItem("militaryQuizDraft");
+    setQuizStatus("提交成功：互动数据已发送到 QuickForm。", "success");
+    showToast("学生互动答题已提交到 QuickForm");
+  } catch (error) {
+    submitQuickFormFallback(endpoint, payload);
+    setQuizStatus("已通过表单方式提交到 QuickForm。如 QuickForm 字段已匹配，后台可查看记录。", "success");
+    showToast("已尝试提交到 QuickForm");
+  }
+});
+
 document.querySelector("#saveReflection").addEventListener("click", () => {
   const value = document.querySelector("#reflection").value.trim();
   showToast(value ? "学习记录已保存到本地课堂档案" : "请先写下你的决策依据");
@@ -1095,9 +1301,13 @@ registerForm.addEventListener("submit", (event) => {
   const data = new FormData(registerForm);
   const name = data.get("name").trim();
   const id = data.get("id").trim();
+  const className = data.get("className").trim();
   if (!name || !id) return;
   document.querySelector("#studentName").textContent = name;
   document.querySelector("#studentMeta").textContent = `${id} · 已登录`;
+  quizName.value = name;
+  quizStudentId.value = id;
+  quizClass.value = className;
   registerDialog.close();
   showToast("注册成功，已进入沉浸式学习模式");
 });

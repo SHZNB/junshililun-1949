@@ -159,6 +159,7 @@
             <button class="source" type="button">影视片段：渡河与指挥会议</button>
           </section>
           <button class="wargame-button" id="startWargame" type="button">进入军棋推演比赛</button>
+          <button class="quiz-button" id="openQuiz" type="button">学生互动答题</button>
         </aside>
       </section>
 
@@ -202,6 +203,93 @@
         </div>
       </form>
     </dialog>
+
+    <dialog id="quizDialog" class="register-dialog quiz-dialog">
+      <form id="quizForm">
+        <div class="dialog-heading">
+          <div>
+            <h2>学生互动答题</h2>
+            <p id="quizContext">当前战役与阶段将自动写入互动记录</p>
+          </div>
+          <button class="dialog-close" id="closeQuiz" type="button" aria-label="关闭答题窗口">×</button>
+        </div>
+
+        <section class="quickform-config" aria-label="QuickForm提交配置">
+          <label>
+            QuickForm提交地址
+            <input id="quickformEndpoint" name="quickformEndpoint" type="url" placeholder="https://www.quickform.cn/..." />
+          </label>
+          <small>请在 QuickForm 后台创建表单后，将表单提交地址粘贴到这里；系统只允许提交到 quickform.cn 域名。</small>
+        </section>
+
+        <div class="quiz-grid">
+          <label>
+            学校
+            <input id="quizSchool" name="school" required placeholder="例如：南京晓庄学院" />
+          </label>
+          <label>
+            学号
+            <input id="quizStudentId" name="studentId" required placeholder="请输入学号" />
+          </label>
+          <label>
+            姓名
+            <input id="quizName" name="name" placeholder="选填" />
+          </label>
+          <label>
+            班级
+            <input id="quizClass" name="className" placeholder="选填" />
+          </label>
+        </div>
+
+        <section class="question-block">
+          <label>
+            1. 本阶段你观察到的主要军事态势
+            <select id="quizSituation" name="routeUnderstanding" required>
+              <option value="">请选择</option>
+              <option value="红军机动转移，主动摆脱围堵">红军机动转移，主动摆脱围堵</option>
+              <option value="敌军多路合围，压缩行动空间">敌军多路合围，压缩行动空间</option>
+              <option value="渡口与交通线成为战场关键">渡口与交通线成为战场关键</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="question-block">
+          <label>
+            2. 如果你在指挥所，你会选择哪一项决策
+            <select id="quizDecision" name="chosenDecision" required>
+              <option value="">请先选择当前阶段决策</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="question-block">
+          <label>
+            3. 写出你的判断依据
+            <textarea id="quizReasoning" name="reasoning" required placeholder="结合地图路线、敌我力量、渡口条件和历史资料，写出你的判断。"></textarea>
+          </label>
+        </section>
+
+        <section class="question-block">
+          <label>
+            4. 这段战争史带给你的和平启示
+            <textarea id="quizReflection" name="peaceReflection" required placeholder="请写出对战争残酷、国家统一和和平来之不易的理解。"></textarea>
+          </label>
+        </section>
+
+        <input id="quizCampaign" name="campaign" type="hidden" />
+        <input id="quizPhase" name="phase" type="hidden" />
+        <input id="quizSubmittedAt" name="submittedAt" type="hidden" />
+        <input name="source" type="hidden" value="南京晓庄学院军事战争沉浸式互动平台" />
+
+        <p class="submit-status" id="quizStatus" role="status" aria-live="polite"></p>
+        <div class="dialog-actions">
+          <button id="saveQuizDraft" type="button">保存草稿</button>
+          <button class="primary" type="submit">提交到 QuickForm</button>
+        </div>
+      </form>
+    </dialog>
+
+    <iframe class="quickform-frame" name="quickformSubmitFrame" title="QuickForm提交结果"></iframe>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="app.js"></script>

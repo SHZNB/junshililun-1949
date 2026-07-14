@@ -110,6 +110,7 @@ p {
 .chapter,
 .choice,
 .wargame-button,
+.quiz-button,
 .reflection button,
 .dialog-actions button {
   border: 0;
@@ -902,12 +903,21 @@ p {
 }
 
 .wargame-button,
+.quiz-button,
 .reflection button,
 .dialog-actions .primary {
   padding: 14px 16px;
   color: #141811;
   background: var(--brass);
   font-weight: 900;
+}
+
+.quiz-button {
+  border: 1px solid rgba(217, 200, 165, 0.52);
+  color: var(--paper);
+  background:
+    linear-gradient(135deg, rgba(53, 72, 61, 0.94), rgba(24, 35, 31, 0.98)),
+    var(--field);
 }
 
 .lower-deck {
@@ -944,7 +954,8 @@ p {
 }
 
 textarea,
-input {
+input,
+select {
   width: 100%;
   border: 1px solid rgba(16, 23, 20, 0.2);
   color: #101714;
@@ -982,6 +993,81 @@ textarea {
 
 .register-dialog input {
   padding: 12px;
+}
+
+.register-dialog select {
+  padding: 12px;
+}
+
+.quiz-dialog {
+  width: min(760px, calc(100% - 32px));
+  max-height: min(88vh, 820px);
+  overflow: auto;
+}
+
+.dialog-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dialog-heading p,
+.quickform-config small,
+.submit-status {
+  margin-top: 6px;
+  color: #cfd8c9;
+  line-height: 1.55;
+}
+
+.dialog-close {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  color: var(--paper);
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.quickform-config,
+.question-block {
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: rgba(217, 200, 165, 0.07);
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.question-block textarea {
+  min-height: 108px;
+}
+
+.submit-status {
+  min-height: 24px;
+  margin: 0;
+}
+
+.submit-status.success {
+  color: #d9f4bc;
+}
+
+.submit-status.error {
+  color: #ffd0c8;
+}
+
+.quickform-frame {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .dialog-actions {
@@ -1114,6 +1200,14 @@ textarea {
 
   .map-character span {
     display: none;
+  }
+
+  .quiz-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog-actions {
+    display: grid;
   }
 }
 
